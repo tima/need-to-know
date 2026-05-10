@@ -9,7 +9,7 @@ Analyze one or more sources and produce a scannable, need-to-know summary.
 
 ## Usage
 
-`/tldr <source1> [source2 ...] [--synthesize] [--deep] [--strict] [--save [path]]`
+`/tldr <source1> [source2 ...] [--synthesize] [--deep] [--strict] [--bluf] [--save [path]]`
 
 ### Arguments
 
@@ -17,6 +17,7 @@ Analyze one or more sources and produce a scannable, need-to-know summary.
 - `--synthesize`: Produce a single combined summary that connects themes across all sources. Without this flag, each source gets its own independent summary.
 - `--deep`: For YouTube videos only. Pull extended metadata (tags, chapters, categories, engagement data) alongside the transcript for richer context. Warn the user this is slower and more token-intensive.
 - `--strict`: Pure attribution mode. Every point must trace directly to the source. No inferences, no added context, no external knowledge.
+- `--bluf`: Quick-read mode. Output only the BLUF section (with the source title and published date for context), then ask the user if they want the full TL;DR summary. All content fetching and analysis still happens normally — only the output is abbreviated.
 - `--save [path]`: Write the summary to a file.
   - If a path is provided, write to that exact path.
   - If no path is provided, generate a filename: `tldr-<concise-descriptive-lc-name>.md` based on the source content (e.g., `tldr-react-server-components-overview.md`).
@@ -38,6 +39,8 @@ Extract sources and flags from the arguments string. Detect each source type:
 If no sources are provided, tell the user: "Please provide at least one source (URL, file path, or YouTube link)."
 
 If `--deep` is provided but no YouTube sources are detected, tell the user: "Note: --deep applies to YouTube sources only and will be ignored."
+
+If `--bluf` is provided, note it — the full analysis still runs, but output is abbreviated (see Step 4.5).
 
 ### Step 1.5: Ambiguity Check
 
@@ -203,6 +206,28 @@ Subject: [UNIFIED THESIS ACROSS ALL SOURCES]
 - **Divergences** — where sources differ, contradict, or present different perspectives.
 - **Key Points by Source** — brief per-source highlights so the reader knows what came from where.
 - **Takeaways** — synthesized conclusions drawing on all sources.
+
+### Step 4.5: BLUF-Only Output (if `--bluf`)
+
+If `--bluf` was provided, **do not output the full summary**. Instead:
+
+1. Output a slim header plus the BLUF:
+
+```
+## [TITLE]
+
+Published: [PUBLISHED DATE]
+
+**BLUF:** [2–4 sentence BLUF, same quality and tone as the full-summary version]
+```
+
+2. Immediately follow with this prompt to the user (plain text, no heading):
+
+"Want the full TL;DR summary?"
+
+3. **Stop.** Do not output Key Points, Details, Takeaways, or the metadata footer. Do not save to file even if `--save` was also provided — wait until the user confirms they want the full summary, then produce it (with `--save` honored at that point).
+
+If `--bluf` was **not** provided, skip this step entirely and continue to Step 5.
 
 ### Step 5: Save to File (if `--save`)
 
