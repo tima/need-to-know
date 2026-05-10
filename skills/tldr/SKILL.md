@@ -138,8 +138,9 @@ All summaries use a consistent hierarchical structure with clear headings, bulle
 **Universal Output Template:**
 
 ```
-## TL;DR Brief: [TITLE]
+# TL;DR Brief: [TITLE]
 
+**Source:** [Source Title](URL or path)
 Published: [PUBLISHED DATE]
 Subject: [CONCISE DESCRIPTIVE SENTENCE OF THE SUBJECT MATTER]
 
@@ -194,8 +195,10 @@ Claude Code | Claude [Model Name] | [Timestamp UTC]
 **Synthesized mode (`--synthesize`):** Read all sources first, then produce a single combined summary using this header:
 
 ```
-## TL;DR Brief: [THEMATIC TITLE derived from combined content]
-Sources: [Title 1](URL1) · [Title 2](URL2) · ...
+# TL;DR Brief: [THEMATIC TITLE derived from combined content]
+**Sources:**
+- [Title 1](URL1)
+- [Title 2](URL2)
 Subject: [UNIFIED THESIS ACROSS ALL SOURCES]
 ------------------------------
 ```
@@ -214,8 +217,9 @@ If `--bluf` was provided, **do not output the full summary**. Instead:
 1. Output a slim header plus the BLUF:
 
 ```
-## [TITLE]
+# [TITLE]
 
+**Source:** [Source Title](URL or path)
 Published: [PUBLISHED DATE]
 
 **BLUF:** [2–4 sentence BLUF, same quality and tone as the full-summary version]
@@ -247,8 +251,8 @@ If the `--save` flag is present:
    - Before writing, announce: "Saving to `<path>`..."
    - Use the Write tool.
    - Include a source line at the top of the file:
-     - Single source: `Source: [Source Title](URL/path)`
-     - With `--synthesize`: a bulleted list labeled `Sources:` with one entry per source, each as `[Source Title](URL/path)`.
+     - Single source: `**Source:** [Source Title](URL/path)`
+     - With `--synthesize`: `**Sources:**` followed by a per-line bulleted list of `[Title](URL/path)` entries.
    - Write the full summary using the hierarchical format described above.
    - End with a horizontal separator (`---`) followed by the metadata footer:
      ```

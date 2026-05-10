@@ -81,6 +81,17 @@ For each source, fetch the content:
 - Use both the transcript and extended metadata for richer context.
 - If the transcript is unavailable but metadata is available, work from metadata alone and note that no transcript was available.
 
+### Step 3.5: Determine Published Date
+
+Extract the publication date for each source to populate the `Published:` field in the output header:
+
+- **YouTube:** Use the `upload_date` field from the `yt-dlp --dump-json` output (format: YYYYMMDD → convert to e.g. `May 1, 2025`). For default mode, get this from the DESCRIPTION output of the helper script or run a quick `yt-dlp --print upload_date --no-warnings "<URL>"` via Bash.
+- **Web pages:** Look for a publication date in the page content (byline, article metadata, `<time>` elements, or "Published on" text). If not found, use `[date unavailable]`.
+- **PDFs:** Look for a date on the title page, header, or document metadata. If not found, use `[date unavailable]`.
+- **Local files:** Use the file's modification date via Bash: `date -r "<path>" "+%B %-d, %Y"`. If unavailable, use `[date unavailable]`.
+
+**Multiple sources:** Use the earliest published date among all sources, and note it as `Published: [DATE] (earliest source)`. If dates vary significantly, list them per-source in the header instead.
+
 ### Step 4: Filter Non-Substantive Content
 
 Before analyzing, mentally filter out:
@@ -139,7 +150,11 @@ Every section should contain enough specific detail that a reader could generate
 ```
 # [Descriptive Title]
 
-**Sources:** [list of source URLs/paths with titles]
+**Source:** [Title](URL or path)   ← single source
+**Sources:**                        ← multiple sources
+- [Title 1](URL1)
+- [Title 2](URL2)
+Published: [PUBLISHED DATE]
 
 ## Overview
 
@@ -221,7 +236,7 @@ If the `--save` flag is present:
 3. **Write the file:**
    - Before writing, announce: "Saving to `<path>`..."
    - Use the Write tool.
-   - Include sources at the top using the same format as the template: `**Sources:** [URL/path with title, one per line if multiple]`
+   - Include sources at the top using the same format as the template: `**Source:** [Title](URL/path)` for a single source, or `**Sources:**` followed by a per-line bulleted list for multiple sources.
    - Write the full learning guide using all applicable sections from the template.
    - End with a horizontal separator (`---`) followed by the metadata footer:
      ```
