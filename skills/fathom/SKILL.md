@@ -11,12 +11,12 @@ Unlike a summary (which tells you what was said), a learning guide helps you act
 
 ## Usage
 
-`/fathom <source1> [source2 ...] [--independent] [--deep] [--strict] [--save [path]]`
+`/fathom <source1> [source2 ...] [--batch] [--deep] [--strict] [--save [path]]`
 
 ### Arguments
 
 - **Sources** (required): One or more YouTube URLs, web page URLs, local file paths, or PDF paths.
-- `--independent`: Generate a separate learning guide for each source instead of synthesizing into one cohesive guide. Without this flag, multiple sources are combined into a single guide that weaves themes together.
+- `--batch`: Generate a separate learning guide for each source instead of synthesizing into one cohesive guide. Without this flag, multiple sources are combined into a single guide that weaves themes together.
 - `--deep`: For YouTube videos only. Pull extended metadata (tags, chapters, categories, engagement data) alongside the transcript for richer context. Warn the user this is slower and more token-intensive.
 - `--strict`: Pure attribution mode. Every point must trace directly to the source. No inferences, no added context, no external knowledge.
 - `--save [path]`: Write the guide to a file.
@@ -219,7 +219,7 @@ Claude Code | Claude [Model Name] | [Timestamp UTC]
 - If sources contradict each other, use a **Conflicting Evidence** callout rather than picking a side.
 - The Connections section should draw relationships both within and across sources — this is where synthesis really shines.
 
-**Independent mode (`--independent`):** Generate a separate learning guide for each source, each with its own heading and full structure.
+**Batch mode (`--batch`):** Generate a separate learning guide for each source, each with its own heading and full structure.
 
 ### Step 6: Save to File (if `--save`)
 

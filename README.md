@@ -66,14 +66,14 @@ Produces a comprehensive learning guide from any source. Unlike a summary, fatho
 #### Usage
 
 ```
-/fathom <source1> [source2 ...] [--independent] [--deep] [--strict] [--save [path]]
+/fathom <source1> [source2 ...] [--batch] [--deep] [--strict] [--save [path]]
 ```
 
 #### Flags
 
 | Flag | What it does |
 |------|-------------|
-| `--independent` | Generate a separate learning guide per source instead of one synthesized guide across all sources |
+| `--batch` | Generate a separate learning guide per source instead of one synthesized guide across all sources |
 | `--deep` | YouTube only. Pull extended metadata alongside the transcript for richer context. Slower and more token-intensive. |
 | `--strict` | Pure attribution mode. Every point must trace directly to the source. No inferences, no external knowledge. |
 | `--save [path]` | Write the guide to a file. Without this flag, output goes to the chat. If no path given, auto-generates a filename like `fathom-kubernetes-networking.md`. Never overwrites existing files. |
@@ -91,7 +91,7 @@ Produces a comprehensive learning guide from any source. Unlike a summary, fatho
 
 /fathom https://site1.com https://site2.com
 
-/fathom https://site1.com https://site2.com --independent --save guides/
+/fathom https://site1.com https://site2.com --batch --save guides/
 ```
 
 #### Output structure
@@ -117,7 +117,7 @@ Each learning guide includes:
 | Goal | Fast need-to-know brief | Deep understanding |
 | Length | Compact | Comprehensive |
 | Good for | Deciding if something is worth your time, quick reference | Studying, teaching yourself, building on the material |
-| Multi-source default | Independent summaries | Synthesized into one guide |
+| Multi-source default | Independent summaries | Synthesized into one guide (use `--batch` for separate guides) |
 | NotebookLM ready | No | Yes |
 
 ---
