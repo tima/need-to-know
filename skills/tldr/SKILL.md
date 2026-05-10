@@ -18,7 +18,7 @@ Analyze one or more sources and produce a scannable, need-to-know summary.
 - `--deep`: For YouTube videos only. Pull extended metadata (tags, chapters, categories, engagement data) alongside the transcript for richer context. Warn the user this is slower and more token-intensive.
 - `--strict`: Pure attribution mode. Every point must trace directly to the source. No inferences, no added context, no external knowledge.
 - `--bluf`: Quick-read mode. Output only the BLUF section (with the source title and published date for context), then ask the user if they want the full TL;DR summary. All content fetching and analysis still happens normally — only the output is abbreviated.
-- `--save [path]`: Write the summary to a file.
+- `--save [path]`: Write the summary to a file. Without this flag, output goes to the chat.
   - If a path is provided, write to that exact path.
   - If no path is provided, generate a filename: `tldr-<concise-descriptive-lc-name>.md` based on the source content (e.g., `tldr-react-server-components-overview.md`).
   - **Never overwrite an existing file.** Before writing, check if the file exists using Glob. If it does, append a numeric suffix (e.g., `tldr-react-server-components-overview-2.md`). Keep incrementing until you find a name that doesn't exist.
@@ -230,6 +230,8 @@ Published: [PUBLISHED DATE]
 If `--bluf` was **not** provided, skip this step entirely and continue to Step 5.
 
 ### Step 5: Save to File (if `--save`)
+
+If `--save` is not present, the summary has already been output to the chat — nothing further to do.
 
 If the `--save` flag is present:
 
