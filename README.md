@@ -18,7 +18,7 @@ Produces a structured, scannable brief from any source. Designed for fast need-t
 #### Usage
 
 ```
-/tldr <source1> [source2 ...] [--synthesize] [--deep] [--strict] [--save [path]]
+/tldr <source1> [source2 ...] [--synthesize] [--deep] [--strict] [--bluf] [--save [path]]
 ```
 
 #### Flags
@@ -28,7 +28,8 @@ Produces a structured, scannable brief from any source. Designed for fast need-t
 | `--synthesize` | Combine multiple sources into one unified summary instead of separate summaries per source |
 | `--deep` | YouTube only. Pull extended metadata (tags, chapters, categories, view counts) alongside the transcript for richer context. Slower and more token-intensive. |
 | `--strict` | Pure attribution mode. Every point must trace directly to the source. No inferences, no added context. |
-| `--save [path]` | Write the summary to a file. If no path given, auto-generates a filename like `tldr-react-server-components.md`. Never overwrites existing files. |
+| `--bluf` | Output only the BLUF to chat, then ask if you want the full summary. Full analysis still runs — only the output is abbreviated. |
+| `--save [path]` | Write the summary to a file. Without this flag, output goes to the chat. If no path given, auto-generates a filename like `tldr-react-server-components.md`. Never overwrites existing files. |
 
 #### Examples
 
@@ -38,6 +39,8 @@ Produces a structured, scannable brief from any source. Designed for fast need-t
 /tldr https://youtu.be/abc123
 
 /tldr paper.pdf --strict
+
+/tldr https://example.com/article --bluf
 
 /tldr https://youtu.be/abc123 --deep --save
 
@@ -73,7 +76,7 @@ Produces a comprehensive learning guide from any source. Unlike a summary, fatho
 | `--independent` | Generate a separate learning guide per source instead of one synthesized guide across all sources |
 | `--deep` | YouTube only. Pull extended metadata alongside the transcript for richer context. Slower and more token-intensive. |
 | `--strict` | Pure attribution mode. Every point must trace directly to the source. No inferences, no external knowledge. |
-| `--save [path]` | Write the guide to a file. If no path given, auto-generates a filename like `fathom-kubernetes-networking.md`. Never overwrites existing files. |
+| `--save [path]` | Write the guide to a file. Without this flag, output goes to the chat. If no path given, auto-generates a filename like `fathom-kubernetes-networking.md`. Never overwrites existing files. |
 
 #### Examples
 
