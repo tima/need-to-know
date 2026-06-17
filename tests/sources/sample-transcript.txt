@@ -1,0 +1,28 @@
+TITLE: Understanding Git Rebase
+CHANNEL: DevOps Tutorials
+DESCRIPTION: A practical guide to git rebase and when to use it versus git merge. Covers interactive rebase, conflict resolution, and best practices.
+
+TRANSCRIPT:
+Hey everyone, welcome back to the channel. Today we're diving into git rebase, one of the most powerful but often misunderstood commands in git.
+
+So first off, what is rebase? Essentially, it's a way to integrate changes from one branch into another, similar to merge, but with a key difference. While merge creates a new commit that combines two branches, rebase rewrites your commit history by moving your commits onto the tip of another branch.
+
+Let me show you what I mean. Imagine you're working on a feature branch while main moves forward. You have commits A, B, C on main, and you branched off at B to create commits D and E on your feature branch. If you merge, you get a merge commit that combines the histories. But if you rebase your feature branch onto main, git takes commits D and E and replays them on top of C, as if you'd just created them fresh.
+
+Why would you want to do this? The main reason is to maintain a clean, linear history. Projects that use rebase heavily end up with a much cleaner git log that's easier to understand. You can follow the story of how the code evolved without all the merge commit noise.
+
+But there are downsides. Rebase rewrites history, which means if you've already pushed your branch and someone else is working on it, rebasing will cause serious problems. The golden rule is: never rebase commits that have been pushed to a shared remote that others might be building on.
+
+Let's talk about interactive rebase, which is incredibly useful for cleaning up your work before submitting a pull request. When you run git rebase -i, you get to choose what happens to each commit. You can reorder them, squash multiple commits into one, edit commit messages, or even drop commits entirely.
+
+Here's a real-world scenario. You're working on a feature and you make ten commits, including some where you're just fixing typos or addressing code review feedback. Before merging to main, you want to clean this up into logical commits. Interactive rebase lets you squash those fixup commits into the relevant feature commits, presenting a clean history to your team.
+
+Conflict resolution during rebase can be tricky. When git tries to replay your commits and encounters a conflict, it pauses and asks you to resolve it. After fixing the conflict, you use git rebase --continue to move forward. If things go wrong, git rebase --abort gets you back to where you started. I always make sure I'm working in a clean state before rebasing, and I keep git reflog in my back pocket in case I need to recover from a mistake.
+
+When should you use rebase versus merge? I generally follow this guideline: use rebase for private branches that only you're working on to keep your history clean. Use merge for public branches or when you want to preserve the exact history of how branches came together. Some teams adopt a rebase workflow where all feature branches are rebased before merging, while others prefer merge commits to maintain a true record of when things happened.
+
+One more advanced tip: git pull --rebase is super useful. Instead of creating a merge commit every time you pull changes from remote, this rebases your local commits on top of the remote changes. It keeps your history linear and clean. You can even set this as the default behavior with git config pull.rebase true.
+
+The key takeaway is that rebase is a powerful tool for maintaining clean history, but it requires discipline and understanding of when it's appropriate. Used well, it makes your git log a pleasure to read. Used poorly, it can cause headaches for your whole team.
+
+That's it for today's video. If you found this helpful, please like and subscribe. Drop a comment if you have questions or want to see more git tutorials. Thanks for watching, and I'll see you in the next one.
