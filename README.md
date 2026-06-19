@@ -134,13 +134,34 @@ brew install yt-dlp
 
 ## Installation
 
-Each skill is a directory with a `SKILL.md` and a `scripts/` folder. Claude Code discovers them via symlinks in `~/.claude/skills/`.
-
 ```bash
-git clone https://github.com/tappnel/need-to-know.git ~/projects/need-to-know
+# All skills, user scope — available in all sessions (recommended)
+npx skills add tima/need-to-know -g
 
-ln -s ~/projects/need-to-know/skills/tldr ~/.claude/skills/tldr
-ln -s ~/projects/need-to-know/skills/fathom ~/.claude/skills/fathom
+# All skills, project scope — this project only
+npx skills add tima/need-to-know
+
+# Specific skills only
+npx skills add tima/need-to-know --skill tldr -g
+npx skills add tima/need-to-know --skill fathom -g
 ```
 
-After symlinking, both `/tldr` and `/fathom` are available in any Claude Code session.
+Local development install:
+```bash
+git clone https://github.com/tima/need-to-know.git ~/projects/need-to-know
+ln -sf ~/projects/need-to-know/skills/tldr ~/.claude/skills/tldr
+ln -sf ~/projects/need-to-know/skills/fathom ~/.claude/skills/fathom
+```
+
+### Uninstall
+
+```bash
+npx skills remove tldr           # project scope
+npx skills remove tldr --global  # user scope
+npx skills remove fathom           # project scope
+npx skills remove fathom --global  # user scope
+```
+
+## License
+
+MIT — see [LICENSE](LICENSE).
