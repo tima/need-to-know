@@ -28,7 +28,7 @@ Unlike summary (what was said), learning guide helps you *understand* — define
    - Local: no `http` prefix
    - Web: starts with `http`
 
-2. **Fetch content** — REQUIRED: when given 2 or more sources, issue ALL fetches as simultaneous tool calls in a single response. Never fetch sources one at a time. A user with 3 sources should wait only as long as the slowest fetch, not the sum of all fetches.
+2. **Fetch content** — REQUIRED: when given 2 or more sources, issue ALL fetches as simultaneous tool calls in a single response. Never fetch sources one at a time. A user with 3 sources should wait only as long as the slowest fetch, not the sum of all fetches. If a fetch fails, tell the user immediately ("Could not fetch [URL] — skipping.") and continue with the remaining sources. Only stop entirely if all sources fail.
    - If `--deep` is set, tell the user before fetching begins: "Using deep mode — pulling extended metadata alongside the transcript. This will take longer and use more tokens."
    - Web: WebFetch (reject if paywalled - "Subscribe to continue", "Sign in to read")
    - Local/PDF: Read tool
