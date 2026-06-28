@@ -45,9 +45,12 @@ Unlike summary (what was said), learning guide helps you *understand* — define
 - After each successful fetch: `echo "$CONTENT" | bash "$CACHE" set $URL_HASH 2>/dev/null` (failure is non-fatal, continue)
 - Cache TTL: 1 hour
 
-3. **Published date** (best-effort, 10-second limit):
-   - Check obvious locations: YouTube upload_date, web article headers/metadata, PDF title page, file mtime
-   - Use `[date unavailable]` if not found quickly - don't spend time searching
+3. **Published date** — one check per source type, then move on immediately:
+   - YouTube: `upload_date` field from yt-dlp JSON output — if absent, `[date unavailable]`
+   - Web: look for a date in the byline or article header only — if not visible in fetched content, `[date unavailable]`
+   - PDF: check title page or first paragraph only — if not there, `[date unavailable]`
+   - Local file: `date -r "<path>" "+%B %-d, %Y"` — if that fails, `[date unavailable]`
+   - Never search further than the single location above for each type.
 
 4. **Filter non-substantive content**:
    - YouTube: Sponsor reads ("this video is sponsored by", "use code"), self-promotion (subscribe/like reminders, merch mentions, channel plugs)
