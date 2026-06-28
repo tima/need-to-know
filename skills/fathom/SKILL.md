@@ -35,11 +35,13 @@ Unlike summary (what was said), learning guide helps you *understand* — define
    - YouTube: `FETCH=$(find "$PWD/.agents/skills/fathom" ~/.agents/skills/fathom ~/.claude/skills/fathom -name "fetch-transcript.sh" 2>/dev/null | head -1); bash "$FETCH" URL`
    - YouTube --deep: Add `yt-dlp --dump-json URL` for metadata
 
-**Caching** (optional, reduces redundant fetches):
-- Before fetch: `URL_HASH=$(echo -n "$URL" | md5 || echo -n "$URL" | md5sum | cut -d' ' -f1)`
-- Check cache: `CACHE=$(find "$PWD/.agents/skills/fathom" ~/.agents/skills/fathom ~/.claude/skills/fathom -name "cache-helper.sh" 2>/dev/null | head -1); bash "$CACHE" get $URL_HASH`
-- If exit 0 (cache hit): use cached content, skip fetch
-- After fetch: `CACHE=$(find "$PWD/.agents/skills/fathom" ~/.agents/skills/fathom ~/.claude/skills/fathom -name "cache-helper.sh" 2>/dev/null | head -1); echo "$CONTENT" | bash "$CACHE" set $URL_HASH`
+**Caching**:
+- Resolve once before any fetch: `CACHE=$(find "$PWD/.agents/skills/fathom" ~/.agents/skills/fathom ~/.claude/skills/fathom -name "cache-helper.sh" 2>/dev/null | head -1)`
+- If `CACHE` is empty, skip caching for this run and proceed with all fetches normally
+- For each source, before fetching:
+  - `URL_HASH=$(echo -n "$URL" | md5 2>/dev/null || echo -n "$URL" | md5sum | cut -d' ' -f1)`
+  - `bash "$CACHE" get $URL_HASH 2>/dev/null` — if exit 0, use output as content and skip the fetch
+- After each successful fetch: `echo "$CONTENT" | bash "$CACHE" set $URL_HASH 2>/dev/null` (failure is non-fatal, continue)
 - Cache TTL: 1 hour
 
 3. **Published date** (best-effort, 10-second limit):
