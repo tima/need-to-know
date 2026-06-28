@@ -129,13 +129,17 @@ fathom | [Model] | [date]
 
 ### Verify Before Output
 
-Before presenting the learning guide to the user, run a silent self-review pass against the fetched source content:
+Before presenting the learning guide to the user, run a silent self-review pass against the fetched source content. This step is silent — no output to the user. Only corrected content reaches the output.
 
+**Standard content** (under 2000 words / under 3 hours / under 50 pages) — full verification:
 1. **Traceability**: Every claim in Key Facts & Insights and Core Concepts must trace directly to something stated in the source. Remove or rewrite any that can't.
 2. **Accuracy**: Check all specific details — statistics, dates, names, quotes — against the source. Correct any that drifted.
-3. **Scope**: Flag and remove any conclusions that go beyond what the source explicitly says. Do not fill gaps with inference or external knowledge (unless in non-strict mode and clearly marked "For context:").
+3. **Scope**: Remove any conclusions that go beyond what the source explicitly says. Do not fill gaps with inference or external knowledge (unless in non-strict mode and clearly marked "For context:").
 
-This step is silent — no output to the user. Only corrected content reaches the output.
+**Large content** (over 2000 words / 3+ hours / 50+ pages) — spot-check verification:
+1. **Traceability**: Verify Key Facts & Insights only — check each bullet traces to the source. Skip Core Concepts subsections.
+2. **Accuracy**: Check only named specifics — statistics, dates, names, direct quotes. Correct any that drifted.
+3. **Scope**: Same as standard — remove any out-of-scope conclusions.
 
 ### Save to File (if `--save`)
 
