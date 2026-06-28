@@ -147,10 +147,16 @@ Before presenting the learning guide to the user, run a silent self-review pass 
 
 ### Save to File (if `--save`)
 
-`--save` without path: auto-generate `fathom-<descriptive>.md` (lowercase, hyphens, <60 chars)
+**Single source or default synthesized mode**: write one file.
+- Path provided: use it
+- No path: auto-generate `fathom-<descriptive>.md` (lowercase, hyphens, <60 chars)
 
-Collision check: Glob for existing file, append `-2`, `-3` until unused
+**Multiple sources with `--batch`**: write one file per source — never combine into a single file.
+- Path provided: treat it as a directory. Write each guide as `<path>/fathom-<descriptive>.md`
+- No path: auto-generate a separate filename per source based on that source's content
+
+Collision check (all cases): Glob for existing file, append `-2`, `-3` until unused
 
 Footer (--save only): Use `date +"%B %-d, %Y"` for current date → `fathom | {current-model} | {date}`
 
-Confirm: "Learning guide saved to `<path>`"
+Confirm each file: "Learning guide saved to `<path>`"
