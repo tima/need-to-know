@@ -31,14 +31,14 @@ Analyze sources and produce scannable, need-to-know summaries.
    - Web: WebFetch (reject if paywalled - "Subscribe to continue", "Sign in to read")
    - Local/PDF: Read tool
    - Remote PDF garbled: `curl -sL URL > /tmp/tldr-$$.pdf` then Read
-   - YouTube: `~/.claude/skills/shared/scripts/fetch-transcript.sh URL`
+   - YouTube: `FETCH=$(find "$PWD/.agents/skills/tldr" ~/.agents/skills/tldr ~/.claude/skills/tldr -name "fetch-transcript.sh" 2>/dev/null | head -1); bash "$FETCH" URL`
    - YouTube --deep: Add `yt-dlp --dump-json URL` for metadata
 
 **Caching** (optional, reduces redundant fetches):
 - Before fetch: `URL_HASH=$(echo -n "$URL" | md5 || echo -n "$URL" | md5sum | cut -d' ' -f1)`
-- Check cache: `~/.claude/skills/shared/scripts/cache-helper.sh get $URL_HASH`
+- Check cache: `CACHE=$(find "$PWD/.agents/skills/tldr" ~/.agents/skills/tldr ~/.claude/skills/tldr -name "cache-helper.sh" 2>/dev/null | head -1); bash "$CACHE" get $URL_HASH`
 - If exit 0 (cache hit): use cached content, skip fetch
-- After fetch: `echo "$CONTENT" | ~/.claude/skills/shared/scripts/cache-helper.sh set $URL_HASH`
+- After fetch: `CACHE=$(find "$PWD/.agents/skills/tldr" ~/.agents/skills/tldr ~/.claude/skills/tldr -name "cache-helper.sh" 2>/dev/null | head -1); echo "$CONTENT" | bash "$CACHE" set $URL_HASH`
 - Cache TTL: 1 hour
 
 3. **Published date** (best-effort, 10-second limit):
