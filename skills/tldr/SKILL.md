@@ -105,6 +105,16 @@ tldr | [Model] | [date]
 - Default: Separate summaries per source
 - `--synthesize`: Unified with combined BLUF, Common Themes, Divergences, Key Points by Source
 
+### Verify Before Output
+
+Before presenting any summary to the user, run a silent self-review pass against the fetched source content:
+
+1. **Traceability**: Every claim in Key Points and Takeaways must trace directly to something stated in the source. Remove or rewrite any that can't.
+2. **Accuracy**: Check all specific details — statistics, dates, names, quotes — against the source. Correct any that drifted.
+3. **Scope**: Flag and remove any conclusions that go beyond what the source explicitly says. Do not fill gaps with inference or external knowledge (unless in non-strict mode and clearly marked "Note:").
+
+This step is silent — no output to the user. Only corrected content reaches the output.
+
 ### --bluf Mode
 
 1. Fetch and analyze full content (same as non-bluf)
