@@ -127,10 +127,12 @@ Before presenting any summary to the user, run a silent self-review pass against
 ### --bluf Mode
 
 1. Fetch and analyze full content (same as non-bluf)
-2. Output only header + BLUF
-3. Ask: "Want the full TL;DR summary?"
-4. If yes: Output remaining sections (Key Points, Details, Takeaways)
-5. If no: Stop
+2. Generate the complete summary internally
+3. Run the full verification pass against the complete summary — do not skip because output will be abbreviated
+4. Output only header + BLUF from the verified summary
+5. Ask: "Want the full TL;DR summary?"
+6. If yes: Output remaining sections (Key Points, Details, Takeaways) — already verified, no second pass needed
+7. If no: Stop
 
 ### Save to File (if `--save`)
 
