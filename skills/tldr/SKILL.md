@@ -27,7 +27,7 @@ Analyze sources and produce scannable, need-to-know summaries.
    - Local: no `http` prefix
    - Web: starts with `http`
 
-2. **Fetch content** (multiple sources = parallel tool calls):
+2. **Fetch content** — REQUIRED: when given 2 or more sources, issue ALL fetches as simultaneous tool calls in a single response. Never fetch sources one at a time. A user with 3 sources should wait only as long as the slowest fetch, not the sum of all fetches.
    - Web: WebFetch (reject if paywalled - "Subscribe to continue", "Sign in to read")
    - Local/PDF: Read tool
    - Remote PDF garbled: `curl -sL URL > /tmp/tldr-$$.pdf` then Read
