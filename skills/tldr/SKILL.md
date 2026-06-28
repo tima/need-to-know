@@ -115,10 +115,16 @@ tldr | [Model] | [date]
 
 ### Save to File (if `--save`)
 
-`--save` without path: auto-generate `tldr-<descriptive>.md` (lowercase, hyphens, <60 chars)
+**Single source or `--synthesize`**: write one file.
+- Path provided: use it
+- No path: auto-generate `tldr-<descriptive>.md` (lowercase, hyphens, <60 chars)
 
-Collision check: Glob for existing file, append `-2`, `-3` until unused
+**Multiple sources without `--synthesize`**: write one file per source — never combine into a single file.
+- Path provided: treat it as a directory. Write each summary as `<path>/tldr-<descriptive>.md`
+- No path: auto-generate a separate filename per source based on that source's content
+
+Collision check (all cases): Glob for existing file, append `-2`, `-3` until unused
 
 Footer (--save only): Use `date +"%B %-d, %Y"` for current date → `tldr | {current-model} | {date}`
 
-Confirm: "Summary saved to `<path>`"
+Confirm each file: "Summary saved to `<path>`"
