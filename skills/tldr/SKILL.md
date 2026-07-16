@@ -31,20 +31,15 @@ Analyze sources and produce scannable, need-to-know summaries.
    - Web: WebFetch (reject if paywalled - "Subscribe to continue", "Sign in to read")
    - Local/PDF: Read tool
    - Remote PDF garbled: `curl -sL URL > /tmp/tldr-$$.pdf` then Read
-   - YouTube: `FETCH=$(find "$PWD/.agents/skills/tldr" ~/.agents/skills/tldr ~/.claude/skills/tldr -name "fetch-transcript.sh" 2>/dev/null | head -1); bash "$FETCH" URL`
-   - YouTube --deep: Add `yt-dlp --dump-json URL` for metadata
-
-**Caching**:
-- Resolve once before any fetch: `CACHE=$(find "$PWD/.agents/skills/tldr" ~/.agents/skills/tldr ~/.claude/skills/tldr -name "cache-helper.sh" 2>/dev/null | head -1)`
-- If `CACHE` is empty, skip caching for this run and proceed with all fetches normally
-- For each source, before fetching:
-  - `URL_HASH=$(echo -n "$URL" | md5 2>/dev/null || echo -n "$URL" | md5sum | cut -d' ' -f1)`
-  - `bash "$CACHE" get $URL_HASH 2>/dev/null` — if exit 0, use output as content and skip the fetch
-- After each successful fetch: `echo "$CONTENT" | bash "$CACHE" set $URL_HASH 2>/dev/null` (failure is non-fatal, continue)
-- Cache TTL: 1 hour
+   - YouTube: Extract the video ID from the URL yourself — no bash call needed (`v=ID` in watch URLs, path in `youtu.be/ID`). Issue these two commands per URL (can run simultaneously):
+     1. `yt-dlp --no-download --print "%(title)s\t%(channel)s\t%(upload_date)s" "URL" 2>/dev/null`
+     2. `python3 -m youtube_transcript_api VIDEO_ID --format text --languages en 2>/dev/null`
+     If command 2 fails (no English captions), retry without `--languages en`. If still fails, skip and tell the user.
+   - YouTube --deep: Same; expand command 1: `yt-dlp --no-download --print "%(title)s\t%(channel)s\t%(upload_date)s\t%(view_count)s\t%(duration_string)s" "URL" 2>/dev/null`
+   - Zero permission prompts for YouTube (any project): add to `~/.claude/settings.json` → `permissions.allow`: `"Bash(yt-dlp --no-download *)"` and `"Bash(python3 -m youtube_transcript_api *)"`
 
 3. **Published date** — one check per source type, then move on immediately:
-   - YouTube: `upload_date` field from yt-dlp JSON output — if absent, `[date unavailable]`
+   - YouTube: `upload_date` from the `yt-dlp --no-download --print` output above (YYYYMMDD — format as "Month D, YYYY") — if blank, `[date unavailable]`
    - Web: look for a date in the byline or article header only — if not visible in fetched content, `[date unavailable]`
    - PDF: check title page or first paragraph only — if not there, `[date unavailable]`
    - Local file: `date -r "<path>" "+%B %-d, %Y"` — if that fails, `[date unavailable]`
