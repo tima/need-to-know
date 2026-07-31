@@ -35,6 +35,19 @@ ln -sf ~/projects/need-to-know/skills/tldr ~/.claude/skills/tldr
 ln -sf ~/projects/need-to-know/skills/fathom ~/.claude/skills/fathom
 ```
 
+### Permissions
+
+Both skills run shell commands that require allowlist entries in `~/.claude/settings.json` to avoid approval prompts. Add these to `permissions.allow`:
+
+```json
+"Bash(yt-dlp --no-download *)",
+"Bash(python3 -m youtube_transcript_api *)",
+"Bash(date *)"
+```
+
+- `yt-dlp` and `youtube_transcript_api` — YouTube metadata and transcript fetch (both skills)
+- `date` — footer timestamp when using `--save` (both skills)
+
 ### Uninstall
 
 ```bash
