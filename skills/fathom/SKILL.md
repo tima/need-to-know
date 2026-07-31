@@ -70,6 +70,8 @@ Unlike summary (what was said), learning guide helps you *understand* — define
 
 Go deep. Goal: reader understands material, not just knows it exists. Specific details, concrete examples, context. Reader should answer questions about topic.
 
+**Before writing any bullet containing a statistic, percentage, or named entity:** Mentally hold the exact source sentence in mind. If you cannot reconstruct it, mark the claim UNVERIFIED and omit it. Do not approximate or infer. Never construct a numeric range from a single data point — if the source gives one bound, report that bound only; ranges require two distinct source values. When a source refers to someone by role or description without naming them ("the creator", "a researcher", "one developer"), reproduce that description exactly — never substitute a name inferred from context or background knowledge. When a source provides an explicit list of named entities (people, tools, examples), reproduce all of them — do not abstract, generalize, or drop items from the list. For YouTube transcripts: if a named entity (model, tool, framework, organization) appears in a form that doesn't match known terminology, use surrounding context to resolve it. If resolvable with confidence, write the correct name with a parenthetical note: `Mistral 3B [transcript: "Mini Stroll 3B"]`. If not resolvable with confidence, mark `[transcript unclear]` and omit the claim.
+
 #### Output Structure
 
 Every section: enough detail for quiz questions/flashcards. **Skip sections** the source doesn't address.
@@ -131,14 +133,28 @@ fathom | [Model] | [date]
 Before presenting the learning guide to the user, run a silent self-review pass against the fetched source content. This step is silent — no output to the user. Only corrected content reaches the output.
 
 **Standard content** (under 2000 words / under 3 hours / under 50 pages) — full verification:
-1. **Traceability**: Every claim in Key Facts & Insights and Core Concepts must trace directly to something stated in the source. Remove or rewrite any that can't.
+1. **Traceability**: Every claim in Key Facts & Insights and Core Concepts must trace directly to something stated in the source. Remove or rewrite any that can't. "Source" means the URLs and files explicitly passed to this skill invocation — other files, KB documents, or cross-references encountered during synthesis are not sources; claims from them must be removed or explicitly marked `[external context, not from source material]`.
 2. **Accuracy**: Check all specific details — statistics, dates, names, quotes — against the source. Correct any that drifted.
-3. **Scope**: Remove any conclusions that go beyond what the source explicitly says. Do not fill gaps with inference or external knowledge (unless in non-strict mode and clearly marked "For context:").
+3. **Scope** — remove conclusions beyond what source explicitly states. Zero-tolerance cases:
+   - Any causal or temporal sequence not explicit in source ("then", "shortly after", "which led to", "following")
+   - Any characterization of intent, capability, or behavior not directly stated (e.g. "designed to", "fewer guardrails", "intentionally")
+   - Any statistic presented as universal that source scopes to a specific organization, dataset, or context — preserve the original scope qualifier
+   - Exception: **Connections & Relationships** section — inference is allowed but must be marked "For context:" rather than suppressed
+
+4. **High-risk patterns** — check each explicitly before output:
+   - Direction inversions: re-read the source sentence for any claim using can/cannot, over/under, majority/minority, more/less — these flip easily
+   - Named entity type: verify model names are called models, benchmarks called benchmarks, organizations called organizations — do not conflate
+   - Fabricated sequence: remove any "then", "shortly after", "followed by", or causal language not verbatim present in source
+   - Scope preservation: if source attributes a stat to one organization's internal data, guide must carry that caveat — do not generalize to universal advice
+   - Speaker attribution: in multi-speaker sources (interviews, videos where a host discusses others' work, panels), verify which speaker made each claim before attributing it. A host paraphrasing someone else's words is not that person speaking.
+   - Entity relationships: when two named entities appear independently in the source, do not imply a relationship between them unless the source explicitly states one.
+
+5. **Internal consistency**: Scan across all sections for claims that contradict each other. A fact stated correctly in one section must not be inverted in another. Resolve any contradiction before output — the source is the tiebreaker.
 
 **Large content** (over 2000 words / 3+ hours / 50+ pages) — spot-check verification:
 1. **Traceability**: Verify Key Facts & Insights only — check each bullet traces to the source. Skip Core Concepts subsections.
 2. **Accuracy**: Check only named specifics — statistics, dates, names, direct quotes. Correct any that drifted.
-3. **Scope**: Same as standard — remove any out-of-scope conclusions.
+3. **Scope**: Same as standard — remove out-of-scope conclusions; apply zero-tolerance cases and high-risk pattern checks to Key Facts & Insights only. Connections & Relationships exception still applies.
 
 ### Save to File (if `--save`)
 
