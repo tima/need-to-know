@@ -11,11 +11,12 @@ Unlike summary (what was said), learning guide helps you *understand* — define
 
 ## Usage
 
-`/fathom <source1> [source2 ...] [--batch] [--deep] [--strict] [--save [path]]`
+`/fathom <source1> [source2 ...] [--batch] [--full] [--deep] [--strict] [--save [path]]`
 
 ### Flags
 
 - `--batch`: Separate guide per source (default: synthesized single guide across sources)
+- `--full`: Preserve all major sections from each source during synthesis, not just common themes (output scales with input)
 - `--deep`: YouTube only — pull extended metadata alongside transcript (slower, token-intensive)
 - `--strict`: Pure attribution mode — every point traces to source, no inferences/external knowledge
 - `--save [path]`: Write to file (default: chat output). No path: auto-generate `fathom-<descriptive>.md`
@@ -72,6 +73,10 @@ Go deep. Goal: reader understands material, not just knows it exists. Specific d
 
 **Before writing any bullet containing a statistic, percentage, or named entity:** Mentally hold the exact source sentence in mind. If you cannot reconstruct it, mark the claim UNVERIFIED and omit it. Do not approximate or infer. Never construct a numeric range from a single data point — if the source gives one bound, report that bound only; ranges require two distinct source values. When a source refers to someone by role or description without naming them ("the creator", "a researcher", "one developer"), reproduce that description exactly — never substitute a name inferred from context or background knowledge. When a source provides an explicit list of named entities (people, tools, examples), reproduce all of them — do not abstract, generalize, or drop items from the list. For YouTube transcripts: if a named entity (model, tool, framework, organization) appears in a form that doesn't match known terminology, use surrounding context to resolve it. If resolvable with confidence, write the correct name with a parenthetical note: `Mistral 3B [transcript: "Mini Stroll 3B"]`. If not resolvable with confidence, mark `[transcript unclear]` and omit the claim.
 
+**Multi-source synthesis approach:**
+- Default mode: Extract common themes across sources. Unique sections that don't connect to broader patterns may be omitted. Output is coherent and focused.
+- `--full` mode: Preserve all major sections from each source, even if unique to one source. Still synthesize (merge redundant concepts, note conflicts), but include outlier content. Use source attribution liberally ("Source X uniquely addresses..."). Output grows with input volume.
+
 #### Output Structure
 
 Every section: enough detail for quiz questions/flashcards. **Skip sections** the source doesn't address.
@@ -125,7 +130,8 @@ fathom | [Model] | [date]
 
 #### Multi-Source
 
-- Default: Synthesized guide - weave insights, note sources, use **Conflicting Evidence** for contradictions
+- Default: Synthesized guide - weave insights across common themes, note sources, use **Conflicting Evidence** for contradictions. Unique sections that don't align across sources may be dropped to maintain coherence.
+- `--full`: Synthesized guide that preserves all major sections from each source, not just common themes. Still de-duplicates redundant concepts, but includes outlier sections unique to individual sources. Output grows proportionally with input.
 - `--batch`: Separate guide per source with full structure
 
 ### Verify Before Output
