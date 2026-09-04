@@ -1,3 +1,4 @@
+.agents/
 .claude/
 *.skill
 .env
@@ -5,3 +6,5 @@
 *.pem
 .DS_Store
 *-workspace/
+skills-lock.json
+test-runs/
